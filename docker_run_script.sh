@@ -13,4 +13,4 @@ docker run -d -ti --name $image_name --net host $image_id
 container_id=$(docker ps -a | grep $image_id | awk '{print $1}'| head -1)
 echo $container_id
 
-docker exec -ti $container_id bash -c "./prepare.sh"
+docker exec -ti $container_id bash -c "./fix_deployment_config.sh"
