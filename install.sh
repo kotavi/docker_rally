@@ -1,6 +1,8 @@
-#!/usr/bin/env bash
+#!/bin/bash -x
 #
 # Prepare node for further Rally installation
+
+node_ip=$1
 
 install_packages() {
     if [ -f /etc/redhat-release ]; then
@@ -28,7 +30,6 @@ start_processes() {
 #   None
 #######################################
 copy_files() {
-    node_ip=$1
     scp $node_ip:/root/openrc .
     chmod +r openrc
 }
