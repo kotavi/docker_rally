@@ -5,8 +5,6 @@ docker pull rallyforge/rally:latest
 image_id=$(docker images | grep latest | awk '{print $3}'| head -1)
 echo $image_id
 
-#docker run -d -ti --name $image_id --net host $image_id
-
 docker_dir=/home/rally/files
 docker run -d -ti -v /var/temp:$docker_dir --net host $image_id
 

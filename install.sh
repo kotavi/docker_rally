@@ -15,7 +15,6 @@ install_packages() {
         istalator="apt-get"
     fi
 
-    $istalator -y install git
     $istalator -y install docker
 }
 
@@ -38,13 +37,15 @@ copy_files() {
         mkdir /var/temp
     fi
     scp $node_ip:/root/openrc /var/temp/
-    chmod +r /var/temp/openrc
+    chmod g+rw /var/temp/openrc
     grep -v "export OS_ENDPOINT_TYPE='internalURL'" /var/temp/openrc > temp && mv temp /var/temp/openrc
 
     cp fix_deployment_config.sh /var/temp/
 
     if [ -f /var/temp/openrc -a -f /var/temp/fix_deployment_config.sh ]; then
         echo 'files were copied successfully'
+    else:
+        echo 'files were NOT copied'
     fi
 }
 get_controller_ip

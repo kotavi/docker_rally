@@ -9,7 +9,11 @@ Copy repository
 
 #### Step 2.
 
-Execute ``./install.sh`` to retrieve controller ip, install `git`, `docker` and copy `openrc` to the current directory
+Execute ``./install.sh`` which runs the next:
+ - retrieves controller ip
+ - installs `git`, `docker`
+ - copies `openrc` from controller 
+ - copies `openrc` and `fix_deployment_config.sh` to `/var/temp` directory
 
 After this `openrc` file should be in the current directory.
 
@@ -18,9 +22,9 @@ After this `openrc` file should be in the current directory.
 Execute ``./docker_run_script.sh`` to pull rally docker image and start rally container.
 Rally container starts with ``./fix_deployment_config.sh`` command.
 This script:
-
+ - pulls rally image
+ - runs image and mounts `/var/temp` directory with `/home/rally/files` in container
  - sets up rally deployment
- - recreates deployment with correct config
  - installs tempest
  - creates all_scenarios.yaml with rally scenarios
 
