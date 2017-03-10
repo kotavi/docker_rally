@@ -7,10 +7,11 @@ echo $image_id
 
 #docker run -d -ti --name $image_id --net host $image_id
 
-docker run -d -ti -v /var/temp:/home/rally --net host $image_id
+docker_dir=/home/rally/files
+docker run -d -ti -v /var/temp:$docker_dir --net host $image_id
 
 container_id=$(docker ps -a | grep $image_id | awk '{print $1}'| head -1)
 echo $container_id
 
-docker exec -ti $container_id bash -c "./fix_deployment_config.sh"
+docker exec -ti $container_id bash -c "$docker_dir/fix_deployment_config.sh"
 docker exec -ti $container_id bash

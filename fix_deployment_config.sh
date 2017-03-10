@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 initialize_mos_variables(){
-    source /home/rally/openrc
+    source /home/rally/files/openrc
 }
 
 setup_rally_deployment() {
