@@ -43,7 +43,7 @@ copy_files() {
 
     cp fix_deployment_config.sh /var/temp/
 
-    if [ -f /var/temp/openrc && -f /var/temp/fix_deployment_config ]; then
+    if [ -f /var/temp/openrc -a -f /var/temp/fix_deployment_config.sh ]; then
         echo 'files were copied successfully'
     fi
 }

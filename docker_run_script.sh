@@ -7,7 +7,7 @@ echo $image_id
 
 #docker run -d -ti --name $image_id --net host $image_id
 
-docker run -d -ti /var/temp:/home/rally --net host $image_id
+docker run -d -ti -v /var/temp:/home/rally --net host $image_id
 
 container_id=$(docker ps -a | grep $image_id | awk '{print $1}'| head -1)
 echo $container_id
