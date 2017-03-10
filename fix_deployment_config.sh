@@ -11,14 +11,6 @@ setup_rally_deployment() {
     rally verify create-verifier --name tempest_tests --type tempest --source https://github.com/openstack/tempest.git
     rally verify list-verifiers
     rally verify show-verifier
-
-    rally deployment config > depl.json
-
-    grep -v "\"endpoint_type\": \"internal\"," depl.json > temp && mv temp depl.json
-
-    rally deployment recreate --file depl.json
-    rally deployment show
-    rally deployment recreate --file depl.json
     rally deployment show
 }
 

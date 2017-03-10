@@ -2,7 +2,9 @@
 #
 # Prepare node for further Rally installation
 
-node_ip=$1
+get_controller_ip(){
+    node_ip=$(fuel nodes | grep controller | awk '{print $9}' | head -1)
+}
 
 install_packages() {
     if [ -f /etc/redhat-release ]; then
@@ -30,9 +32,22 @@ start_processes() {
 #   None
 #######################################
 copy_files() {
-    scp $node_ip:/root/openrc .
-    chmod +r openrc
+    if [ -d /var/temp ]; then
+        echo 'path /var/temp exists'
+    elif [ ! -d /var/temp ]; then
+        mkdir /var/temp
+    fi
+    scp $node_ip:/root/openrc /var/temp/
+    chmod +r /var/temp/openrc
+    grep -v "export OS_ENDPOINT_TYPE='internalURL'" /var/temp/openrc > temp && mv temp /var/temp/openrc
+
+    cp fix_deployment_config.sh /var/temp/
+
+    if [ -f /var/temp/openrc && -f /var/temp/fix_deployment_config ]; then
+        echo 'files were copied successfully'
+    fi
 }
+get_controller_ip
 install_packages
 start_processes
 copy_files
