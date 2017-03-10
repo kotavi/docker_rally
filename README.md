@@ -9,6 +9,8 @@ Copy repository
 
 #### Step 2.
 
+Get controller ip address by ``fuel nodes | grep controller``
+
 Execute ``./install.sh <controller_node_ip>`` to install `git`, `docker` and copy `openrc` to the current directory
 
 After this `openrc` file should be in the current directory.
