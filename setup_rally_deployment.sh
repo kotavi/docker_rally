@@ -7,7 +7,6 @@ initialize_mos_variables(){
 setup_rally_deployment() {
     rally-manage db recreate
     rally deployment create --fromenv --name=tempest
-
     rally verify create-verifier --name tempest_tests --type tempest --source https://github.com/openstack/tempest.git
     rally verify list-verifiers
     rally verify show-verifier
