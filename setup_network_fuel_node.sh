@@ -12,7 +12,7 @@ get_management_network_info(){
 }
 
 enter_interface_info(){
-    echo "Enter ip addrress: "
+    echo "Enter ip addrress (e.q. 10.109.6.233/24): "
     read ip_addr_drg
     echo "Enter broadcast address: "
     read brd
