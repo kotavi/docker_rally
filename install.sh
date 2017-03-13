@@ -1,6 +1,8 @@
 #!/bin/bash -x
 #
 # Prepare node for further Rally installation
+# 1. Install needed packages
+# 2. Copy openrc from controller to fuel node to /var/temp/ folder
 
 get_controller_ip(){
     node_ip=$(fuel nodes | grep controller | awk '{print $9}' | head -1)
@@ -44,7 +46,7 @@ copy_files() {
 
     if [ -f /var/temp/openrc -a -f /var/temp/fix_deployment_config.sh ]; then
         echo 'files were copied successfully'
-    else:
+    else
         echo 'files were NOT copied'
     fi
 }
