@@ -16,7 +16,7 @@ setup_rally_deployment() {
 combine_rally_scenarios(){
     pwd
     cd devops-qa-tools/rally-scenarios/
-    sudo ./combine_files.py --filename all_scenarios.yaml
+    ./combine_files.py --filename all_scenarios.yaml
     echo 'To run Rally with all scenarios use the next command:
     rally task start all_scenarios.yaml --task-args-file task_arguments.yaml
     To create file with scenarios for specific service use the next command:

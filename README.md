@@ -54,7 +54,7 @@ Enter ip address \(e.q. 10.109.6.233/24\):
 Execute ``./install.sh`` which runs the next:
  - retrieves controller ip
  - installs `docker`
- - copies `openrc` from controller to fuel node
+ - copies `openrc` from controller to fuel node to the current directory
 
 #### Pull rally docker image and start rally container
 
@@ -72,11 +72,11 @@ This script:
 
 To create file with scenarios for specific service use the next command:
 
-``sudo ./combine_files.py --path <service_name>/ --filename <service_name>_scenario.yaml``
+``./combine_files.py --path <service_name>/ --filename <service_name>_scenario.yaml``
 
 To create file with scenarios from all services use the next command:
 
-``sudo ./combine_files.py --filename <service_name>_scenario.yaml``
+``./combine_files.py --filename <service_name>_scenario.yaml``
 
 Run Rally using the next command:
 

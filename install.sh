@@ -27,7 +27,6 @@ get_controller_ip(){
 copy_files() {
 # Copy openrc file from controller node
     scp $node_ip:/root/openrc .
-    chmod g+rw openrc
     grep -v "export OS_ENDPOINT_TYPE='internalURL'" openrc > temp && mv temp openrc
 }
 

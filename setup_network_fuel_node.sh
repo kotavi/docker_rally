@@ -10,6 +10,7 @@ get_management_network_info(){
     net_interface_status=$(ip l)
     echo "Display the status of all network interfaces: "
     echo "$net_interface_status"
+    echo
 }
 
 enter_interface_info(){

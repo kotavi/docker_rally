@@ -13,5 +13,6 @@ container_id=$(docker ps -a | grep $image_id | awk '{print $1}'| head -1)
 
 docker cp $fuel_dir/ $container_id:$docker_dir
 
+docker exec -ti $container_id bash -c "sudo chown rally:rally -R $docker_dir/"
 docker exec -ti $container_id bash -c "$docker_dir/deployment/setup_rally_deployment.sh"
 docker exec -ti $container_id bash
