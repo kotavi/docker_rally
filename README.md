@@ -8,12 +8,7 @@
 - docker_run_script.sh - pulls rally docker image and runs it
 - setup_rally_deployment.sh - sets up rally deployment, installs tempest, clones repo with rally scenarios
 
-#### Step 1. Copy repository
-
-``git clone https://github.com/kotavi/docker_rally``
-``cd docker_rally``
-
-#### Step 2.  Setup network for Fuel node.
+#### Setup network for Fuel node.
 
 Execute ``./setup_network_fuel_node.sh``
 
@@ -54,40 +49,39 @@ IP ADDRESS IS NOT AVAILABLE
 Enter ip address \(e.q. 10.109.6.233/24\):
 ```
 
-#### Step 3. 
+#### Install required packages and copy openrc file 
 
 Execute ``./install.sh`` which runs the next:
  - retrieves controller ip
  - installs `docker`
- - copies `openrc` from controller 
- - copies `openrc` and `fix_deployment_config.sh` to `/var/temp` directory
+ - copies `openrc` from controller to fuel node
 
-#### Step 4. Execute ``./docker_run_script.sh``
+#### Pull rally docker image and start rally container
 
-It pulls rally docker image and starts rally container.
-Rally container starts with ``./setup_rally_deployment.sh`` command.
+Execute ``./docker_run_script.sh``
+
 This script:
  - pulls rally image
- - runs image and mounts `/var/temp` directory with `/home/rally/files` in container
+ - runs image and copies all from current directory to `/home/rally/devops-qa-tools` in container
  - sets up rally deployment
  - installs tempest
+ - container starts with ``setup_rally_deployment.sh`` command.
  - creates all_scenarios.yaml with rally scenarios
- - `openrc` file is stored in /home/rally/files in container
 
-#### Step 5. Run Rally with scenarios
+#### Run Rally with scenarios
 
 To create file with scenarios for specific service use the next command:
 
-``./combine_files.py --path <service_name>/ --filename <service_name>_scenario.yaml``
+``sudo ./combine_files.py --path <service_name>/ --filename <service_name>_scenario.yaml``
 
 To create file with scenarios from all services use the next command:
 
-``./combine_files.py --filename <service_name>_scenario.yaml``
+``sudo ./combine_files.py --filename <service_name>_scenario.yaml``
 
 Run Rally using the next command:
 
 ``rally task start <name_of_file_with_scenarios> --task-args-file task_arguments.yaml``
 
-#### Step 6. Run Tempest smoke tests
+#### Run Tempest smoke tests
 
 ``rally verify start --pattern set=smoke``
