@@ -6,6 +6,10 @@ get_management_network_info(){
     cidr=$(fuel network-group | grep management | awk '{if ($5 ~ /^[0-9]+$/) print $7}')
     echo "Management network information: "
     echo "$fuel_net_grp"
+    echo
+    net_interface_status=$(ip l)
+    echo "Display the status of all network interfaces: "
+    echo "$net_interface_status"
 }
 
 enter_interface_info(){
@@ -43,7 +47,6 @@ check_information(){
 }
 
 bring_interface_up(){
-    echo $reply
     if [ $reply == 'Y' ]; then
         echo "The next commands will be executed, please check them:"
         echo "ip link add link eth1 name eth1.$vlan_tag type vlan id $vlan_tag"

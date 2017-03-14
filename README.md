@@ -3,7 +3,7 @@
 ### Description of scripts
 
 - setup_network_fuel_node.sh - setup management network so that tests will have access from fuel node to the services
-- install.sh - deploys and starts docker, copies `openrc` file from one of the controllers to fuel node
+- install.sh - deploys and starts docker process, copies `openrc` file from one of the controllers to fuel node
 - clean_containers_and_images.sh - removes all containers and images
 - docker_run_script.sh - pulls rally docker image and runs it
 - setup_rally_deployment.sh - sets up rally deployment, installs tempest, clones repo with rally scenarios

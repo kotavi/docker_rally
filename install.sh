@@ -2,11 +2,7 @@
 #
 # Prepare node for further Rally installation
 # 1. Install needed packages
-# 2. Copy openrc from controller to fuel node to /var/temp/ folder
-
-get_controller_ip(){
-    node_ip=$(fuel nodes | grep controller | awk '{print $9}' | head -1)
-}
+# 2. Copy openrc from controller to fuel node
 
 install_packages() {
     if [ -f /etc/redhat-release ]; then
@@ -24,33 +20,18 @@ start_processes() {
     service docker start
 }
 
-###########################################
-# Copy openrc file from controller node
-# to fuel node from where rally will be run
-# Arguments:
-#   Requires ip address of controller node
-# Returns:
-#   None
-#######################################
-copy_files() {
-    if [ -d /var/temp ]; then
-        echo 'path /var/temp exists'
-    elif [ ! -d /var/temp ]; then
-        mkdir /var/temp
-    fi
-    scp $node_ip:/root/openrc /var/temp/
-    chmod g+rw /var/temp/openrc
-    grep -v "export OS_ENDPOINT_TYPE='internalURL'" /var/temp/openrc > temp && mv temp /var/temp/openrc
-
-    cp fix_deployment_config.sh /var/temp/
-
-    if [ -f /var/temp/openrc -a -f /var/temp/setup_rally_deployment.sh ]; then
-        echo 'files were copied successfully'
-    else
-        echo 'files were NOT copied'
-    fi
+get_controller_ip(){
+    node_ip=$(fuel nodes | grep controller | awk '{print $9}' | head -1)
 }
-get_controller_ip
+
+copy_files() {
+# Copy openrc file from controller node
+    scp $node_ip:/root/openrc .
+    chmod g+rw openrc
+    grep -v "export OS_ENDPOINT_TYPE='internalURL'" openrc > temp && mv temp openrc
+}
+
 install_packages
 start_processes
+get_controller_ip
 copy_files
