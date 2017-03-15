@@ -4,6 +4,9 @@
 # 1. Install needed packages
 # 2. Copy openrc from controller to fuel node
 
+controller_ip=$1
+
+# move to precondition that docker has to be pre installed
 install_packages() {
     if [ -f /etc/redhat-release ]; then
         istalator="yum"
@@ -21,13 +24,23 @@ start_processes() {
 }
 
 get_controller_ip(){
+#    if [ $controller_ip -qe "" ]; then
+#      node_ip=$(fuel nodes | grep controller | awk '{print $9}' | head -1)
+#    else
+#        node_ip=$controller_ip
+#    fi
     node_ip=$(fuel nodes | grep controller | awk '{print $9}' | head -1)
 }
 
 copy_files() {
 # Copy openrc file from controller node
-    scp $node_ip:/root/openrc .
-    grep -v "export OS_ENDPOINT_TYPE='internalURL'" openrc > temp && mv temp openrc
+#    fuel_nodes=$(fuel nodes)
+#    if [ $fuel_nodes==*"command not found"* ]; then
+#        cp /root/openrc .
+#    else
+#        scp $node_ip:/root/openrc .
+#    fi
+    sed "/export OS_ENDPOINT_TYPE='internalURL'/d" openrc > temp && mv temp openrc
 }
 
 install_packages
