@@ -2,15 +2,20 @@
 
 ### Description of scripts
 
-- setup_network_fuel_node.sh - setup management network so that tests will have access from fuel node to the services
-- install.sh - deploys and starts docker process, copies `openrc` file from one of the controllers to fuel node
-- clean_containers_and_images.sh - removes all containers and images
+- tools/setup_network_fuel_node.sh - setup management network so that tests will have access from fuel node to the services
+- tools/clean_containers_and_images.sh - removes all containers and images
 - docker_run_script.sh - pulls rally docker image and runs it
-- setup_rally_deployment.sh - sets up rally deployment, installs tempest, clones repo with rally scenarios
+- setup_rally_deployment.sh - sets up rally deployment, installs tempest
+
+#### Preconditions
+
+Install `git` and `docker`
+Provide `openrc` to `devops-qa-tools` folder
+Update `deployment_configuration.json` file
 
 #### Setup network for Fuel node.
 
-Execute ``./setup_network_fuel_node.sh``
+Execute ``./tools/setup_network_fuel_node.sh``
 
 ```bash
 Example of success
@@ -49,39 +54,21 @@ IP ADDRESS IS NOT AVAILABLE
 Enter ip address \(e.q. 10.109.6.233/24\):
 ```
 
-#### Install required packages and copy openrc file 
-
-Execute ``./install.sh`` which runs the next:
- - retrieves controller ip
- - installs `docker`
- - copies `openrc` from controller to fuel node to the current directory
-
 #### Pull rally docker image and start rally container
 
 Execute ``./docker_run_script.sh``
 
+To run script you can specify optional parameters:
+image_name and image_version
+
+``./docker_run_script.sh <image_name>:<image_version> <tempest_source>:<tempest_version>``
+`` ./docker_run_script.sh  rallyforge/rally:latest /home/rally/devops-qa-tools/tempest/:14.0.0``
+`` ./docker_run_script.sh  rallyforge/rally:latest https://github.com/openstack/tempest.git:14.0.0``
+
 This script:
  - pulls rally image
- - runs image and copies all from current directory to `/home/rally/devops-qa-tools` in container
+ - runs image and mounts current directory with `/home/rally/devops-qa-tools` in container
  - sets up rally deployment
  - installs tempest
- - container starts with ``setup_rally_deployment.sh`` command.
+ - container starts with ``setup_rally_deployment.sh`` command
  - creates all_scenarios.yaml with rally scenarios
-
-#### Run Rally with scenarios
-
-To create file with scenarios for specific service use the next command:
-
-``./combine_files.py --path <service_name>/ --filename <service_name>_scenario.yaml``
-
-To create file with scenarios from all services use the next command:
-
-``./combine_files.py --filename <service_name>_scenario.yaml``
-
-Run Rally using the next command:
-
-``rally task start <name_of_file_with_scenarios> --task-args-file task_arguments.yaml``
-
-#### Run Tempest smoke tests
-
-``rally verify start --pattern set=smoke``

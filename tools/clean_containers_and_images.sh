@@ -1,16 +1,25 @@
 #!/bin/bash -x
+#
+# To run script you can specify optional parameters:
+# image_name and image_version
+# ./clean_containers_and_images.sh <image_name>:<image_version>
+# ./clean_containers_and_images.sh rallyforge/rally:latest
 
-stop_remove_containers(){
-    container_id=$(docker ps -a -q)
-    docker stop $container_id
-    docker rm $container_id
-    # docker rm $(docker stop $(docker ps -a -q))
+
+image_info=${1:-rallyforge/rally:0.8.1}
+image_name=`echo $1|cut -d\: -f1`
+image_version=`echo $1|cut -d\: -f2`
+
+stop_remove_rally_containers(){
+    rally_containers_id=$(docker ps -a -q --filter=ancestor=$image_name:$image_version)
+    docker stop $rally_containers_id
+    docker rm $rally_containers_id
 }
 
 remove_images(){
-    image_id=$(docker images -q)
+    image_id=$(docker images $image_name:$image_version -q)
     docker rmi $image_id
 }
 
-stop_remove_containers
+stop_remove_rally_containers
 remove_images

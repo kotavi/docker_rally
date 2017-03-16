@@ -1,30 +1,39 @@
 #!/bin/bash -x
+#
+# Example:
+# ./deployment/docker_run_script.sh <tempest_source>:<version>
+# ./deployment/docker_run_script.sh /home/rally/devops-qa-tools/tempest/:14.0.0
 
-initialize_mos_variables(){
-    source /home/rally/devops-qa-tools/openrc
+tempest_info=${1:-https://github.com/openstack/tempest.git:15.0.0}
+
+get_parameters(){
+    IFS=':' read -ra DATA <<< "$tempest_info"
+    if [ "${DATA[0]}" == "http" -o "${DATA[0]}" == "https" ]; then
+        tempest_source=$(echo $tempest_info|cut -d\: -f-2)
+    else
+        git clone https://github.com/openstack/tempest.git devops-qa-tools/tempest/
+        tempest_source=$(echo $tempest_info|cut -d\: -f1)
+    fi
+    tempest_version=${DATA[-1]}
 }
 
-setup_rally_deployment() {
-    rally-manage db recreate
-    rally deployment create --fromenv --name=tempest
-    rally verify create-verifier --name tempest_tests --type tempest --source https://github.com/openstack/tempest.git
-    rally verify list-verifiers
-    rally verify show-verifier
-    rally deployment show
+create_rally_deployment() {
+    rally deployment create --filename devops-qa-tools/deployment_configuration.json --name=tempest
+}
+
+create_verifier(){
+    rally verify create-verifier --name tempest_tests --type tempest --source $tempest_source --version $tempest_version
 }
 
 combine_rally_scenarios(){
     pwd
     cd devops-qa-tools/rally-scenarios/
     ./combine_files.py --filename all_scenarios.yaml
-    echo 'To run Rally with all scenarios use the next command:
-    rally task start all_scenarios.yaml --task-args-file task_arguments.yaml
-    To create file with scenarios for specific service use the next command:
-    ./combine_files.py --path <service_name>/ --filename <service_name>_scenarios.yaml
-    Example:
-    ./combine_files.py --path neutron/ --filename neutron_scenarios.yaml'
+    echo
+    echo 'For more information on rally-scenarios check rally-scenarios/README.md'
 }
 
-initialize_mos_variables
-setup_rally_deployment
+get_parameters
+create_rally_deployment
+create_verifier
 combine_rally_scenarios
