@@ -26,9 +26,9 @@ create_verifier(){
 }
 
 combine_rally_scenarios(){
-    pwd
-    cd devops-qa-tools/rally-scenarios/
+    pushd devops-qa-tools/rally-scenarios/
     ./combine_files.py --filename all_scenarios.yaml
+    popd
     echo
     echo 'For more information on rally-scenarios check rally-scenarios/README.md'
 }
