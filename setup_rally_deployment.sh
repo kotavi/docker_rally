@@ -18,7 +18,7 @@ get_parameters(){
 }
 
 create_rally_deployment() {
-    rally deployment create --filename devops-qa-tools/deployment_configuration.json --name=tempest
+    rally deployment create --filename docker_rally/deployment_configuration.json --name=tempest
 }
 
 create_verifier(){

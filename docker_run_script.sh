@@ -17,7 +17,7 @@ tempest_info=${2:-https://github.com/openstack/tempest.git:15.0.0}
 
 docker pull $image_name:$image_version
 
-image_id=$(docker images $image_name:$image_version -q)
+image_id=$(docker images -q $image_name:$image_version)
 
 container_id=$(docker run -d -ti -v $fuel_dir:$docker_dir --net host --pid host $image_id)
 
